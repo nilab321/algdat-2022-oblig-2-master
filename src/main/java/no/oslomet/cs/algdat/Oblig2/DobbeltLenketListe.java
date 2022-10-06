@@ -10,11 +10,10 @@ import java.util.Iterator;
 
 public class DobbeltLenketListe<T> implements Liste<T> {
 
-    /**
-     * Node class
-     *
-     * @param <T>
-     */
+
+
+     // @param <T>
+
     private static final class Node<T> {
         private T verdi;                   // nodens verdi
         private Node<T> forrige, neste;    // pekere
@@ -36,12 +35,43 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private int antall;            // antall noder i listen
     private int endringer;         // antall endringer i listen
 
+
+
+
     public DobbeltLenketListe() {
-        throw new UnsupportedOperationException();
+        // Konstruktøren til den tomme listen
+        hode = null;
+        hale = null;
+        antall = 0;
+        endringer = 0;
     }
 
     public DobbeltLenketListe(T[] a) {
-        throw new UnsupportedOperationException();
+        if (a == null) {
+            throw new NullPointerException("Tabbelen a er null!");
+        }
+        if (a.length>0){
+            int i =0;
+            for (i=0; i<a.length; i++){
+                if (a[i] != null){
+                    hode = new Node<>(a[i]);
+                    antall++;
+                    break;
+                }
+            }
+            hale=hode;
+            if (hode != null){
+                i++;
+                for (i=0; i<a.length; i++){
+                    if (a[i] != null) {
+
+                        hale.neste = new Node<>(a[i], hale, null);
+                        hale = hale.neste;
+                        antall++;
+                    }
+                }
+            }
+        }
     }
 
     public Liste<T> subliste(int fra, int til) {
