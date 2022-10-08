@@ -40,31 +40,31 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     public DobbeltLenketListe() {
         // Konstruktøren til den tomme listen
-        hode = null;
-        hale = null;
+        hode = hale = null;
         antall = 0;
         endringer = 0;
     }
 
     public DobbeltLenketListe(T[] a) {
+        this.hode = null;
+        this.hale = null;
         if (a == null) {
             throw new NullPointerException("Tabbelen a er null!");
         }
-        if (a.length>0){
-            int i =0;
-            for (i=0; i<a.length; i++){
-                if (a[i] != null){
+        if (a.length > 0) {
+            int i = 0;
+            for (; i < a.length; i++) {
+                if (a[i] != null) {
                     hode = new Node<>(a[i]);
                     antall++;
                     break;
                 }
             }
-            hale=hode;
-            if (hode != null){
+            hale = hode;
+            if (hode != null) {
                 i++;
-                for (i=0; i<a.length; i++){
+                for (; i < a.length; i++) {
                     if (a[i] != null) {
-
                         hale.neste = new Node<>(a[i], hale, null);
                         hale = hale.neste;
                         antall++;
@@ -79,13 +79,13 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     @Override
-    public int antall() {
-        throw new UnsupportedOperationException();
+    public int antall(){
+        return antall;
     }
 
     @Override
     public boolean tom() {
-        throw new UnsupportedOperationException();
+        return true;
     }
 
     @Override
