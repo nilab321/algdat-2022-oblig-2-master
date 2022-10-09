@@ -6,6 +6,7 @@ package no.oslomet.cs.algdat.Oblig2;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Objects;
 
 
 public class DobbeltLenketListe<T> implements Liste<T> {
@@ -90,7 +91,25 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean leggInn(T verdi) {
-        throw new UnsupportedOperationException();
+        verdi= Objects.requireNonNull(verdi, "Null-verdier er ikke tillatt!");
+
+        Node<T> nyNode = new Node<>(verdi);
+        if(hode == null && hale == null && antall == 0){ // Tilfelle der listen på forhånd er tom
+            hode = nyNode;
+            hale = hode;
+            endringer++;
+            antall++;
+            return true;
+        }
+        else { // Tilfelle der det ikke er en tom liste
+            nyNode.forrige= hale;
+            hale.neste = nyNode;
+            hale = nyNode;
+            endringer++;
+            antall++;
+            return true;
+
+        }
     }
 
     @Override
@@ -159,7 +178,26 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
 
     public String omvendtString() {
-        throw new UnsupportedOperationException();
+
+        Node<T> current = hale;
+        StringBuilder s = new StringBuilder();
+        s.append("[");
+
+        if (tom()) {
+            s.append("]");
+            return s.toString();
+        } else {
+            s.append(current.verdi);
+            current = current.forrige;
+            while (current != null) {
+                s.append(", ");
+                s.append(current.verdi);
+                current = current.forrige;
+            }
+        }
+        s.append("]");
+
+        return s.toString();
     }
 
     @Override
