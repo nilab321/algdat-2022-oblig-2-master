@@ -56,7 +56,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             int i = 0;
             for (; i < a.length; i++) {
                 if (a[i] != null) {
-                    hode = new Node<>(a[i]);
+                    hode = new Node<>(a[i], null, null);
                     antall++;
                     break;
                 }
@@ -156,7 +156,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean tom() {
-        return true;
+        return antall == 0;
     }
 
     @Override
