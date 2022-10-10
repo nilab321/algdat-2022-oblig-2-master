@@ -221,8 +221,12 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public T hent(int indeks) {
-        throw new UnsupportedOperationException();
+
+        Node<T> current = finnNode(indeks);
+
+        return current.verdi;
     }
+
 
 
 
@@ -246,7 +250,17 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
     @Override
     public T oppdater(int indeks, T nyverdi) {
-        throw new UnsupportedOperationException();
+
+        Objects.requireNonNull(nyverdi);
+
+        Node<T> current = finnNode(indeks);
+
+        T gammelVerdi = current.verdi;
+        endringer++;
+
+        current.verdi = nyverdi;
+
+        return gammelVerdi;
     }
 
     @Override
@@ -255,27 +269,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     @Override
-    public T fjern(int indeks)  {
-
-        indeksKontroll(indeks, false);
-
-        Node<T> current = hode;
-        T verdi;
-
-        //Første fjernes
-        if (indeks == 0) {
-            verdi = current.verdi;
-
-            if (current.neste != null) {
-                hode = current.neste;
-                hode.forrige = null;
-            } else {
-                hode = null;
-                hale = null;
-            }
-        }
-
-        //Siste fjerne
+    public T fjern(int indeks) {
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     public void nullstill() {
