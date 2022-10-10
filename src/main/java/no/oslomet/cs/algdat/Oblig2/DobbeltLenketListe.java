@@ -204,7 +204,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             Node<T> node = hode;
 
             for (int i = 0; i < indeks; i++) node = node.neste;
-
             node = new Node<T>(verdi, node.forrige, node);
             node.neste.forrige = node.forrige.neste = node;
         }
@@ -256,9 +255,27 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     @Override
-    public T fjern(int indeks) {
-        throw new UnsupportedOperationException();
-    }
+    public T fjern(int indeks)  {
+
+        indeksKontroll(indeks, false);
+
+        Node<T> current = hode;
+        T verdi;
+
+        //Første fjernes
+        if (indeks == 0) {
+            verdi = current.verdi;
+
+            if (current.neste != null) {
+                hode = current.neste;
+                hode.forrige = null;
+            } else {
+                hode = null;
+                hale = null;
+            }
+        }
+
+        //Siste fjerne
 
     @Override
     public void nullstill() {
