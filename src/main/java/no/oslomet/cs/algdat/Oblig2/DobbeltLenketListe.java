@@ -88,15 +88,14 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             for (int i = 0; i < indeks; i++) {
                 current = current.neste;
             }
-            return current;
 
         } else { //Søker fra hale
             current = hale;
             for (int i = antall - 1; i > indeks; i--) {
                 current = current.forrige;
             }
-            return current;
         }
+        return current;
     }
 
 
@@ -110,17 +109,12 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     //hjele tabell
     private static void fratilKontroll(int antall, int fra, int til)
     {
-        if (fra < 0)                                  // fra er negativ
-            throw new IndexOutOfBoundsException
-                    ("fra(" + fra + ") er negativ!");
+        if (fra < 0 || til > antall)                                  // fra er negativ
+            throw new IndexOutOfBoundsException();
 
-        if (til > antall)              // til er utenfor tabellen
-            throw new IndexOutOfBoundsException
-                    ("til(" + til + ") > tablengde(" + antall + ")");
 
         if (fra > til)                                // fra er større enn til
-            throw new IllegalArgumentException
-                    ("fra(" + fra + ") > til(" + til + ") - illegalt intervall!");
+            throw new IllegalArgumentException();
     }
 
 
@@ -265,13 +259,110 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean fjern(T verdi) {
-        throw new UnsupportedOperationException();
+
+
+        if (verdi == null) {
+            return false;
+        }
+
+        Node<T> current = hode;
+
+        //Første fjernes
+        if (verdi.equals(current.verdi)) {
+            if (current.neste != null) {
+                hode = current.neste;
+                hode.forrige = null;
+            } else {
+                hode = null;
+                hale = null;
+            }
+            antall--;
+            endringer++;
+            return true;
+        }
+
+        //Siste fjernes
+        current = hale;
+        if (verdi.equals(current.verdi)) {
+            hale = current.forrige;
+            hale.neste = null;
+            antall--;
+            endringer++;
+            return true;
+        }
+
+        //Mellom fjernes
+        current = hode.neste;
+        for (; current != null; current = current.neste) {
+            if (verdi.equals(current.verdi)) {
+                current.forrige.neste = current.neste;
+                current.neste.forrige = current.forrige;
+                antall--;
+                endringer++;
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public T fjern(int indeks) {
-        throw new UnsupportedOperationException();
+
+        indeksKontroll(indeks, false);
+
+        Node<T> current = hode;
+        T verdi;
+
+        //Første fjernes
+        if (indeks == 0) {
+            verdi = current.verdi;
+
+            if (current.neste != null) {
+                hode = current.neste;
+                hode.forrige = null;
+            } else {
+                hode = null;
+                hale = null;
+            }
+        }
+
+        //Siste fjernes
+        else if (indeks == antall - 1) {
+            current = hale;
+            verdi = hale.verdi;
+
+            hale = current.forrige;
+            hale.neste = null;
+        }
+
+        //Mellom fjernes
+        else {
+            for (int i = 0; i < indeks; i++) {
+                current = current.neste;
+            }
+            verdi = current.verdi;
+
+            current.forrige.neste = current.neste;  //Noden til venstre for current peker på noden til høyre
+            current.neste.forrige = current.forrige;//Noden til høyre for current peker på noden til venstre
+        }
+
+        antall--;
+        endringer++;
+        return verdi;
     }
+
+    /** @Override
+    public void nullstill() {
+    for(Node<T> t = hode; t != null; t = t.neste) {
+    t.verdi = null;
+    t.forrige = t.neste = null;
+    }
+    hode = hale = null;
+    antall = 0;
+    endringer++;
+    }**/
+
+
 
     @Override
     public void nullstill() {
