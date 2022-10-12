@@ -4,9 +4,7 @@ package no.oslomet.cs.algdat.Oblig2;
 ////////////////// class DobbeltLenketListe //////////////////////////////
 
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.Objects;
+import java.util.*;
 
 
 public class DobbeltLenketListe<T> implements Liste<T> {
@@ -366,7 +364,14 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public void nullstill() {
-        throw new UnsupportedOperationException();
+        for(Node<T> t = hode; t != null; t = t.neste) {
+            t.verdi = null;
+            t.forrige = t.neste = null;
+        }
+        hode = hale = null;
+        antall = 0;
+        endringer++;
+
     }
 
     @Override
@@ -419,11 +424,14 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public Iterator<T> iterator() {
-        throw new UnsupportedOperationException();
+
+        return new DobbeltLenketListeIterator();
     }
 
     public Iterator<T> iterator(int indeks) {
-        throw new UnsupportedOperationException();
+
+        indeksKontroll(indeks, false);
+        return new DobbeltLenketListeIterator(indeks);
     }
 
     private class DobbeltLenketListeIterator implements Iterator<T> {
@@ -438,7 +446,10 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
 
         private DobbeltLenketListeIterator(int indeks) {
-            throw new UnsupportedOperationException();
+            indeksKontroll(indeks,false);
+            denne = finnNode(indeks);
+            fjernOK = false;    // blir sann når next() kalles
+            iteratorendringer = endringer;    // teller endringer
         }
 
         @Override
@@ -448,7 +459,18 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         @Override
         public T next() {
-            throw new UnsupportedOperationException();
+
+            if (!hasNext()) throw new NoSuchElementException("Ingen verdier!");
+
+            if (endringer != iteratorendringer)
+                throw new ConcurrentModificationException("listen ble endret!");
+
+            T tempverdi = denne.verdi;
+            denne = denne.neste;
+
+            fjernOK = true;
+
+            return tempverdi;
         }
 
         @Override
@@ -456,7 +478,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             throw new UnsupportedOperationException();
         }
 
-    } // class DobbeltLenketListeIterator
+
+
+    }
 
     public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
         throw new UnsupportedOperationException();
