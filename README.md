@@ -95,7 +95,7 @@ Oppgave8:
     sjekker VI iteratorendirnger er like endringer hvis ikke så kaster vi en exception.
     Vi sjekkerom  METHODEN hasNext er ikke ture så kaster vi en exception
     hvis fjernOk er true så kan man bruke remove() methoden.
-    Til slutt  returnerer vi denneverdi sin verdien.
+    Til slutt returnerer vi denneverdi sin verdien.
 
 
 
